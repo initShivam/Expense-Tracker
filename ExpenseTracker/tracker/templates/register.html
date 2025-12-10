@@ -1,0 +1,29 @@
+{% extends "base.html"%}
+{% block start %}
+{% load static %}
+<div style=" margin-top:-80px !important">
+<h3>Registration Page</h3>
+        <form method="POST" id="form">
+    {% csrf_token %}
+    <div class="form-control">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" placeholder="Enter Username..." />
+    </div>
+    <div class="form-control">
+        <label for="first_name">First name</label>
+        <input type="text" name="first_name" id="first_name" placeholder="Enter First Name..." />
+    </div>
+    <div class="form-control">
+        <label for="last_name">Last name</label>
+        <input type="text" name="last_name" id="last_name" placeholder="Enter Last Name..." />
+    </div>
+    <div class="form-control">
+        <label for="password">Password <br /></label>
+        <input type="password" name="password" id="password" placeholder="Enter Password..." />
+    </div>
+    <button class="btn" type="submit" style="background-color:green;">Register</button>
+</form>
+<p>Already have an account? <a href="{% url 'logout_view' %}">Login</a></p>
+
+    </div>
+{%endblock%}

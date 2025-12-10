@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block start %}
+{% load static %}
+    <h1 style="font-weight: bold; font-size: 2rem;">Expense Tracker</h1>
+    
+    <!-- Messages -->
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <div class="container" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;">
+        <div class="header">
+            <img src="https://i.ibb.co/jfScDTC/budget.png" alt="Expense Tracker" />
+            <div class="balance-container">
+                <h2>Your Balance</h2>
+                <h2 id="balance" class="balance">${{ current_balance.current_balance }}</h2>
+            </div>
+        </div>
+        
+        <div class="inc-exp-container">
+            <div>
+                <h4>Income</h4>
+                <p id="money-plus" class="money plus">+${{ income }}</p>
+            </div>
+            <div>
+                <h4>Expenses</h4>
+                <p id="money-minus" class="money minus">${{ expense }}</p>
+            </div>
+        </div>
+        
+        <h3>History</h3>
+        <ul id="list" class="list">
+            {% for transaction in transactions %}
+            <li class="{% if transaction.expense_type == 'DEBIT' %}minus{% else %}plus{% endif %}">
+                {{ transaction.description }}
+                <span>{{ transaction.amount }}</span>
+                <a class="delete-btn" href="{% url 'delete_transaction' transaction.id %}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <h3>Add new transaction</h3>
+        <form method="POST" id="form">
+            {% csrf_token %}
+            <div class="form-control">
+                <label for="text">Description</label>
+                <input type="text" name="description" id="text" placeholder="Enter description..." />
+            </div>
+            <div class="form-control">
+                <label for="amount">Amount <br />
+                    <small>(-100 = expense, 100 = income)</small>
+                </label>
+                <input type="number" name="amount" id="amount" placeholder="Enter amount..." />
+            </div>
+            <button class="btn" type="submit" style="margin-top: 20px;">Add transaction</button>
+        </form>
+        <a class = "btn" style = "background-color:'blue';width:100px;text-decoration: none;text-align: center; margin:  -10px 35% 0;" href = {% url 'logout_view'%}>Logout</a>
+    </div>
+    
+    <!-- Optional: Notification Container (if using JS later) -->
+    <div class="notification-container" id="notification">
+        <p>Please add a description and amount</p>
+    </div>
+    {% endblock %}
